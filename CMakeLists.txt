@@ -35,7 +35,7 @@ endif()
 catkin_package(
   INCLUDE_DIRS include/${PROJECT_NAME}/
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp sensor_msgs cv_bridge image_transport
+  CATKIN_DEPENDS roscpp sensor_msgs cv_bridge image_transport prophesee_event_msgs
 )
 
 ###########
