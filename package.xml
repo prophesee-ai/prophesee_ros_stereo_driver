@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>prophesee_ros_driver</name>
+  <name>prophesee_ros_stereo_driver</name>
   <version>0.0.2</version>
-  <description>Publisher and Viewer for Prophesee Event-Based Sensors</description>
+  <description>Stereo Publisher and Viewer for Prophesee Event-Based Sensors</description>
 
   <maintainer email="nlyubova@prophesee.ai">Natalia Lyubova</maintainer>
   <author email="natalia.lyubova@prophesee.ai">Natalia Lyubova</author>

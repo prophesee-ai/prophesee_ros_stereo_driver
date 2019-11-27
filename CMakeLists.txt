@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(prophesee_ros_driver)
+project(prophesee_ros_stereo_driver)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -48,56 +48,21 @@ include_directories(
   ${OPENCV_INCLUDE_DIRS}
 )
 
-# Prophesee Publisher
-add_executable(prophesee_ros_publisher
-    src/prophesee_ros_publisher.cpp
-    src/log_tone_mapper.cpp
-)
-
-target_link_libraries(
-    prophesee_ros_publisher
-    ${catkin_LIBRARIES}
-    prophesee_driver
-)
-
-add_dependencies(
-    prophesee_ros_publisher
-    prophesee_event_msgs_generate_messages_cpp
-    ${catkin_EXPORTED_TARGETS}
-    )
-
 # Stereo Publisher
-add_executable(stereo_publisher
-    src/stereo_publisher.cpp
+add_executable(prophesee_ros_stereo_publisher
+    src/prophesee_ros_stereo_publisher.cpp
     src/log_tone_mapper.cpp)
 
 target_link_libraries(
-    stereo_publisher
+    prophesee_ros_stereo_publisher
     ${catkin_LIBRARIES}
     prophesee_driver
 )
 
 add_dependencies(
-    stereo_publisher
+    prophesee_ros_stereo_publisher
     prophesee_event_msgs_generate_messages_cpp
     ${catkin_EXPORTED_TARGETS}
     )
 
-# Prophesee Viewer
-add_executable(prophesee_ros_viewer
-    src/prophesee_ros_viewer.cpp
-    src/cd_frame_generator.cpp
-    src/log_tone_mapper.cpp
-)
 
-target_link_libraries(
-    prophesee_ros_viewer
-    ${catkin_LIBRARIES}
-    prophesee_driver
-)
-
-add_dependencies(
-    prophesee_ros_viewer
-    prophesee_event_msgs_generate_messages_cpp
-    ${catkin_EXPORTED_TARGETS}
-    )

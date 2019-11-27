@@ -14,7 +14,7 @@
 #include <prophesee_event_msgs/Event.h>
 #include <prophesee_event_msgs/EventArray.h>
 
-#include "stereo_publisher.h"
+#include "prophesee_ros_stereo_publisher.h"
 
 PropheseeWrapperStereoPublisher::PropheseeWrapperStereoPublisher():
   nh_("~"),
