@@ -4,7 +4,7 @@
  * Copyright: (c) 2015-2019 Prophesee                              *
  *******************************************************************/
 
-#ifndef STEREO_PUBLISHER_H_
+#ifndef STEREO_ROS_PUBLISHER_H_
 #define STEREO_ROS_PUBLISHER_H_
 
 #include <sensor_msgs/CameraInfo.h>
