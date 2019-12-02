@@ -149,8 +149,10 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
   camera_right.start();
   if(master_left_) {
     Prophesee::Camera::synchronize_and_start_cameras(camera_left,camera_right);
+    ROS_INFO("[CONF] The Cameras have been synchronized with the left camera being the master");
   } else {
     Prophesee::Camera::synchronize_and_start_cameras(camera_right,camera_left);
+    ROS_INFO("[CONF] The Cameras have been synchronized with the right camera being the master");
   }
 
   start_timestamp_ = ros::Time::now();
@@ -223,11 +225,10 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         // Publish the message
         publisher.publish(event_buffer_msg);
 
-
         ROS_DEBUG("CD data available, buffer size: %d at time: %llu", buffer_size, ev_begin->t);
       }
     };
-    [[gnu::unused]] Prophesee::CallbackId cd_callback_ = camera_left.cd().add_callback(cd_callback_fun);
+    [[gnu::unused]] Prophesee::CallbackId cd_callback_ = camera.cd().add_callback(cd_callback_fun);
   } catch (Prophesee::CameraException &e) {
     ROS_WARN("%s", e.what());
     publish_cd_ = false;
