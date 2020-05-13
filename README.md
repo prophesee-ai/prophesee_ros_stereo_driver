@@ -3,9 +3,9 @@
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
 This metapackage contains ROS stereo driver based on a wrapper around Metavision SDK Driver module.
-It offers the follosing ROS nodes
-    * prophesee_ros_stereo_publisher - publishing data from Prophesee sensors to ROS topics
-    * prophesee_ros_stereo_viewer - listening data from ROS topics and visualizing them on a screen
+It offers the follosing ROS nodes:
+  * prophesee_ros_stereo_publisher - publishing data from Prophesee sensors to ROS topics
+  * prophesee_ros_stereo_viewer - listening data from ROS topics and visualizing them on a screen
 
 Supported Prophesee EVK:
   * stereo event-based only
@@ -70,11 +70,11 @@ To publish data from Prophesee stereo camera to ROS topics:
   ```
 
 The following topics will be published:
-  * /prophesee/camera/camera_info - info about the camera
-  * /prophesee/camera/cd_events_buffer - buffer of CD (Change Detection) events
-  * /prophesee/camera/imu - IMU data
- 
- 
+  * /prophesee/camera_left/camera_info - info about the left camera
+  * /prophesee/camera_left/cd_events_buffer - buffer of CD (Change Detection) events from the left camera
+  * /prophesee/camera_right/camera_info - info about the right camera
+  * /prophesee/camera_right/cd_events_buffer - buffer of CD (Change Detection) events from the right camera
+
 
 ### Data viewer
 
