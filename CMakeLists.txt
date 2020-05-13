@@ -25,7 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
         message_generation
 )
 
-find_package(prophesee_driver REQUIRED)
+find_package(MetavisionSDK COMPONENTS driver REQUIRED)
 
 if (CATKIN_ENABLE_TESTING)
   find_package(roslaunch REQUIRED)
@@ -55,14 +55,14 @@ add_executable(prophesee_ros_stereo_publisher
 
 target_link_libraries(
     prophesee_ros_stereo_publisher
+    metavision_sdk_driver
     ${catkin_LIBRARIES}
-    prophesee_driver
 )
 
 add_dependencies(
     prophesee_ros_stereo_publisher
     prophesee_event_msgs_generate_messages_cpp
     ${catkin_EXPORTED_TARGETS}
-    )
+)
 
 

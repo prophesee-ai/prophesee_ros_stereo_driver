@@ -9,7 +9,7 @@
 
 #include <sensor_msgs/CameraInfo.h>
 
-#include <prophesee_driver.h>
+#include <metavision/sdk/driver/prophesee_driver.h>
 
 #include "log_tone_mapper.h"
 
@@ -36,16 +36,16 @@ private:
     /// \param camera_ reference to one of the camera object (left/right)
     /// \return Returns if camera opening was successful
     ///
-    bool openCamera(Prophesee::Camera & camera_);
+    bool openCamera(Metavision::Camera & camera_);
 
     /// \brief Publishes CD events
-    void publishCDEvents(Prophesee::Camera & camera, ros::Publisher & publisher);
+    void publishCDEvents(Metavision::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Publishes gray-level frames
-    void publishGrayLevels(Prophesee::Camera & camera, ros::Publisher & publisher);
+    void publishGrayLevels(Metavision::Camera & camera, ros::Publisher & publisher);
 
     /// \brief Publishes IMU events
-    void publishIMUEvents(Prophesee::Camera & camera, ros::Publisher & publisher, const std::string camPos);
+    void publishIMUEvents(Metavision::Camera & camera, ros::Publisher & publisher, const std::string camPos);
 
     /// \brief Node handler - the access point to communication with ROS
     ros::NodeHandle nh_;
@@ -71,14 +71,14 @@ private:
     /// Used to access data from the left camera. Serial
     /// numer to left/right are taken from ros parameter
     /// space
-    Prophesee::Camera camera_left;
+    Metavision::Camera camera_left;
 
     /// \brief Instance of Camera class for right camera
     ///
     /// Used to access data from the right camera. Serial
     /// numer to left/right are taken from ros parameter
     /// space
-    Prophesee::Camera camera_right;
+    Metavision::Camera camera_right;
 
     /// \brief Instance of LogToneMapper class
     ///

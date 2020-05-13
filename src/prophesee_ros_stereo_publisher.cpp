@@ -85,12 +85,12 @@ PropheseeWrapperStereoPublisher::PropheseeWrapperStereoPublisher():
 
   // Add camera runtime error callback
   camera_left.add_runtime_error_callback(
-        [](const Prophesee::CameraException &e) { ROS_WARN("%s", e.what()); });
+        [](const Metavision::CameraException &e) { ROS_WARN("%s", e.what()); });
   camera_right.add_runtime_error_callback(
-        [](const Prophesee::CameraException &e) { ROS_WARN("%s", e.what()); });
+        [](const Metavision::CameraException &e) { ROS_WARN("%s", e.what()); });
 
   // Get the sensor config
-  Prophesee::CameraConfiguration config = camera_left.get_camera_configuration();
+  Metavision::CameraConfiguration config = camera_left.get_camera_configuration();
   ROS_INFO("[CONF] INFORMATION ON LEFT CAMERA");
   ROS_INFO("[CONF] Width:%i, Height:%i", camera_left.geometry().width(), camera_left.geometry().height());
   ROS_INFO("[CONF] Max event rate, in kEv/s: %u", config.max_drop_rate_limit_kEv_s);
@@ -119,16 +119,16 @@ PropheseeWrapperStereoPublisher::~PropheseeWrapperStereoPublisher() {
   nh_.shutdown();
 }
 
-bool PropheseeWrapperStereoPublisher::openCamera(Prophesee::Camera & camera) {
+bool PropheseeWrapperStereoPublisher::openCamera(Metavision::Camera & camera) {
   bool camera_is_opened = false;
 
   // Initialize the camera instance
   try {
     if(&camera==&camera_left){
-      camera = Prophesee::Camera::from_serial(left_camera_id);
+      camera = Metavision::Camera::from_serial(left_camera_id);
       ROS_INFO("Left camera was opened successfully");
     } else if (&camera==&camera_right) {
-      camera = Prophesee::Camera::from_serial(right_camera_id);
+      camera = Metavision::Camera::from_serial(right_camera_id);
       ROS_INFO("Right Camera was opened successfully");
     } else {
       ROS_WARN("Invalid camera Reference in call to PropheseeWrapperStereoPublisher::openCamera");
@@ -138,7 +138,7 @@ bool PropheseeWrapperStereoPublisher::openCamera(Prophesee::Camera & camera) {
       camera.biases().set_from_file(biases_file_);
     }
     camera_is_opened = true;
-  } catch (Prophesee::CameraException &e) {
+  } catch (Metavision::CameraException &e) {
     ROS_WARN("%s", e.what());
   }
   return camera_is_opened;
@@ -148,10 +148,10 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
   camera_left.start();
   camera_right.start();
   if(master_left_) {
-    Prophesee::Camera::synchronize_and_start_cameras(camera_left,camera_right);
+    Metavision::Camera::synchronize_and_start_cameras(camera_left,camera_right);
     ROS_INFO("[CONF] The Cameras have been synchronized with the left camera being the master");
   } else {
-    Prophesee::Camera::synchronize_and_start_cameras(camera_right,camera_left);
+    Metavision::Camera::synchronize_and_start_cameras(camera_right,camera_left);
     ROS_INFO("[CONF] The Cameras have been synchronized with the right camera being the master");
   }
 
@@ -171,8 +171,8 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
   if (publish_imu_)
   {
     /** We need to enable the IMU sensor **/
-    camera_left.imu_sensor().enable();
-    camera_right.imu_sensor().enable();
+    camera_left.imu_module().enable();
+    camera_right.imu_module().enable();
 
     /** The class method with the callback **/
     publishIMUEvents(camera_left, pub_imu_events_left,"left");
@@ -191,10 +191,10 @@ void PropheseeWrapperStereoPublisher::startPublishing() {
   }
 }
 
-void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera, ros::Publisher & publisher) {
+void PropheseeWrapperStereoPublisher::publishCDEvents(Metavision::Camera & camera, ros::Publisher & publisher) {
   // Initialize and publish a buffer of CD events
   try {
-    auto cd_callback_fun=[this,&camera,&publisher](const Prophesee::EventCD *ev_begin, const Prophesee::EventCD *ev_end) {
+    auto cd_callback_fun=[this,&camera,&publisher](const Metavision::EventCD *ev_begin, const Metavision::EventCD *ev_end) {
       // Check the number of subscribers to the topic
       if (publisher.getNumSubscribers() <= 0)
         return;
@@ -214,7 +214,7 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
 
         // Add events to the message
         auto buffer_it = event_buffer_msg.events.begin();
-        for (const Prophesee::EventCD *it = ev_begin; it != ev_end; ++it, ++buffer_it) {
+        for (const Metavision::EventCD *it = ev_begin; it != ev_end; ++it, ++buffer_it) {
           prophesee_event_msgs::Event &event = *buffer_it;
           event.x = it->x;
           event.y = it->y;
@@ -228,17 +228,17 @@ void PropheseeWrapperStereoPublisher::publishCDEvents(Prophesee::Camera & camera
         ROS_DEBUG("CD data available, buffer size: %d at time: %llu", buffer_size, ev_begin->t);
       }
     };
-    [[gnu::unused]] Prophesee::CallbackId cd_callback_ = camera.cd().add_callback(cd_callback_fun);
-  } catch (Prophesee::CameraException &e) {
+    [[gnu::unused]] Metavision::CallbackId cd_callback_ = camera.cd().add_callback(cd_callback_fun);
+  } catch (Metavision::CameraException &e) {
     ROS_WARN("%s", e.what());
     publish_cd_ = false;
   }
 }
 
-void PropheseeWrapperStereoPublisher::publishGrayLevels(Prophesee::Camera & camera, ros::Publisher & publisher) {
+void PropheseeWrapperStereoPublisher::publishGrayLevels(Metavision::Camera & camera, ros::Publisher & publisher) {
   // Initialize and publish a gray-level frame
   try {
-    camera.set_exposure_frame_callback(uint16_t(graylevel_rate_), [this,&publisher]([[gnu::unused]] Prophesee::timestamp t, const cv::Mat &f) {
+    camera.set_exposure_frame_callback(uint16_t(graylevel_rate_), [this,&publisher]([[gnu::unused]] Metavision::timestamp t, const cv::Mat &f) {
       // Check the number of subscribers to the topic
       if (publisher.getNumSubscribers() <= 0)
         return;
@@ -255,8 +255,8 @@ void PropheseeWrapperStereoPublisher::publishGrayLevels(Prophesee::Camera & came
 
       ROS_DEBUG("Graylevel data is available");
     });
-  } catch (Prophesee::CameraException &e) {
-    if (e.code().value() & Prophesee::CameraErrorCode::UnsupportedFeature)
+  } catch (Metavision::CameraException &e) {
+    if (e.code().value() & Metavision::CameraErrorCode::UnsupportedFeature)
       publish_graylevels_ = false;
     else {
       ROS_WARN("%s", e.what());
@@ -265,11 +265,11 @@ void PropheseeWrapperStereoPublisher::publishGrayLevels(Prophesee::Camera & came
   }
 }
 
-void PropheseeWrapperStereoPublisher::publishIMUEvents(Prophesee::Camera &camera, ros::Publisher &publisher, const std::string camPos) {
+void PropheseeWrapperStereoPublisher::publishIMUEvents(Metavision::Camera &camera, ros::Publisher &publisher, const std::string camPos) {
   // Initialize and publish a buffer of IMU events
   try {
-    [[gnu::unused]] Prophesee::CallbackId imu_callback = camera.imu().add_callback(
-          [this,&publisher,camPos](const Prophesee::EventIMU *ev_begin, const Prophesee::EventIMU *ev_end) {
+    [[gnu::unused]] Metavision::CallbackId imu_callback = camera.imu().add_callback(
+          [this,&publisher,camPos](const Metavision::EventIMU *ev_begin, const Metavision::EventIMU *ev_end) {
       // Check the number of subscribers to the topic
       if (publisher.getNumSubscribers() <= 0)
         return;
@@ -299,7 +299,7 @@ void PropheseeWrapperStereoPublisher::publishIMUEvents(Prophesee::Camera &camera
         ROS_DEBUG("IMU data available, buffer size: %d at time: %llu", buffer_size, ev_begin->t);
       }
     });
-  } catch (Prophesee::CameraException &e) {
+  } catch (Metavision::CameraException &e) {
     ROS_WARN("%s", e.what());
     publish_imu_ = false;
   }
