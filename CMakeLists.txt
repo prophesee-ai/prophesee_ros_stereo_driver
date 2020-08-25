@@ -51,7 +51,7 @@ include_directories(
 # Stereo Publisher
 add_executable(prophesee_ros_stereo_publisher
     src/prophesee_ros_stereo_publisher.cpp
-    src/log_tone_mapper.cpp)
+)
 
 target_link_libraries(
     prophesee_ros_stereo_publisher
