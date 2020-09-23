@@ -3,7 +3,6 @@
   <node pkg="prophesee_ros_driver" type="prophesee_ros_viewer" name="prophesee_ros_stereo_viewer_left" respawn="false" output="screen">
     <param name="camera_name" value="camera_left" />
     <param name="show_cd" value="true" />
-    <param name="show_graylevels" value="false" />
 
     <!-- Time interval to display events up to the current time, in us -->
     <param name="display_accumulation_time" value="5000" />
@@ -11,7 +10,6 @@
   <node pkg="prophesee_ros_driver" type="prophesee_ros_viewer" name="prophesee_ros_stereo_viewer_right" respawn="false" output="screen">
     <param name="camera_name" value="camera_right" />
     <param name="show_cd" value="true" />
-    <param name="show_graylevels" value="false" />
 
     <!-- Time interval to display events up to the current time, in us -->
     <param name="display_accumulation_time" value="5000" />
