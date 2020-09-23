@@ -2,7 +2,8 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-This metapackage contains ROS stereo driver based on a wrapper around Metavision SDK Driver module.
+This metapackage contains ROS stereo driver based on a wrapper around [Metavision SDK](https://docs.prophesee.ai/) Driver Module.
+
 It offers the follosing ROS nodes:
   * prophesee_ros_stereo_publisher - publishing data from Prophesee sensors to ROS topics
   * prophesee_ros_stereo_viewer - listening data from ROS topics and visualizing them on a screen
@@ -13,16 +14,9 @@ Supported Prophesee EVK:
 
 ## Installation
 
-First of all, you would need to install dependencies, such as Metavision SDK:
+First of all, install Metavision SDK following [these instructions](https://docs.prophesee.ai/getting_started/installation/linux.html).
 
-  * Request an access to Knowledge Center, if not done yet. To get an access, fill the [webform](https://www.prophesee.ai/contact-us/) and provide us a short description of your research project.
-
-  * Sign up for a trial version of [Metavision SDK](https://support.prophesee.ai/portal/en/kb/articles/sdk-trial-request-form), if not done yet.
-
-  * Install Metavision SDK following [the instructions on Knowledge Center](https://support.prophesee.ai/portal/en/kb/articles/linux-software).
-
-
-Then, compile GitHub code:
+Then, compile the wrapper code:
 
   * Clone the source to your catkin workspace ( [create a workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace), if needed)
 
@@ -49,10 +43,6 @@ Then, compile GitHub code:
 
 ## Getting Started
   
-The package contains the following ROS nodes:
-  * prophesee_ros_stereo_publisher
-  * prophesee_ros_stereo_viewer
-
 ### Data publisher
 
 To publish data from Prophesee stereo camera to ROS topics:
@@ -85,6 +75,7 @@ To visualize data from ROS topics:
   ```
 
 ## Contact
-The code is open to contributions, so do not hesitate to ask questions, propose pull requests or create bug reports. In case of any issue, please add it here on github. 
+The code is open to contributions, thus do not hesitate to propose pull requests or create/fix bug reports.
+In case of any issue, please add it here on GitHub. 
 For any other information contact us [here](https://www.prophesee.ai/contact-us/) 
 
