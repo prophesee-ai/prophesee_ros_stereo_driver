@@ -2,7 +2,7 @@
 
 ![Event-based vision by Prophesee](event-based_vision_PROPHESEE.png)
 
-Note that this repository is experimental (it is not tested with the latest Metavision SDK).
+Note that this repository is experimental (deprecated since Metavision SDK >v2.1.0).
 
 This metapackage contains ROS stereo driver based on a wrapper around [Metavision SDK](https://docs.prophesee.ai/) Driver Module.
 
